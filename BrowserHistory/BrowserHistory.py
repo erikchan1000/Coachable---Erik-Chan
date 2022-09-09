@@ -10,50 +10,6 @@ class DoublyLinkedList:
         self.tail = self.head
         self.size = 0
 
-    def deleteFront(self):
-        if self.size == 0:
-            return None
-
-        elif self.size == 1:
-            self.head = None
-            self.tail = None
-
-        else:
-            self.head = self.head.next
-            self.head.prev = None
-            
-    
-    def delete(self, node):
-        counter = 0
-
-        if self.size == 0:
-            return None
-        curr  = self.head
-        while counter < self.size:
-            if curr == node:
-                if self.size == 1:
-                    self.head = None
-                    self.tail = None
-
-                else:
-                    prev = curr.prev
-                    prev.next = None
-                    self.tail = prev
-
-            counter += 1
-
-    def addEnd(self, node):
-        self.size += 1
-
-        if self.head:
-            node.next = self.head
-
-        self.head = node
-        
-        if self.tail is None:
-            self.tail = self.head
-        return True
-
 
 
 class BrowserHistory:
@@ -66,22 +22,35 @@ class BrowserHistory:
     def current_page(self):
         return self.currentPage
 
-    # Traversal: Google -> Yahoo -> Facebook -> 
-
-    # self.back = Google -> Yahoo -> Facebook -> Youtube
-
     def go_to(self, page):
         if self.currentPage and self.currentPage.next is not None:
             self.currentPage.next = None
 
-        self.currentPage.next = Node(page)
 
-        self.currentPage = self.currentPage.next
+        if self.currentPage is None:
+            self.currentPage = Node(page)
+
+        else:
+
+            myNode = Node(page)
+            
+            self.currentPage.next = myNode
+
+            myNode.prev = self.currentPage
+
+            self.currentPage = self.currentPage.next
+
+        self.hmap[self.currentIndex] = self.currentPage
+        self.currentIndex += 1
+
+        print(self.currentPage.url)
 
     def go_back(self):
 
         if self.currentPage and self.currentPage.prev:
             self.currentPage = self.currentPage.prev
+            self.currentIndex -= 1
+            print(self.currentPage.url)
 
         else:
             return None
@@ -89,28 +58,38 @@ class BrowserHistory:
     def go_forward(self):
         if self.currentPage and self.currentPage.next:
             self.currentPage = self.currentPage.next
+            print(self.currentPage.url)
 
         else:
             return None
             
 
     def skip_backward(self, N):
-        count = 0 
-
-        while count < N:
-            count += 1
-            self.go_back()
-
-        return self.currentPage
-
+        endIndex = 0 if self.currentIndex - N < 0 else self.currentIndex - N
+        
+        self.currentIndex = self.hmap[endIndex]
+        
     def skip_forward(self, N):
-        count = 0
+        endIndex = self.currentIndex + N
+        
+        if endIndex not in self.hmap:
+            self.currentIndex = max(self.hmap)
 
-        while count < N:
-            count += 1
+        else:
+            self.currentIndex = endIndex
 
-            self.go_forward()
+        self.currentPage = self.hmap[self.currentIndex]
+
+
 
 test = BrowserHistory()
 
 test.go_to("test.com")
+
+test.go_to("google.com")
+
+test.go_to("yahoo.com")
+
+test.go_back()
+
+test.go_forward()
