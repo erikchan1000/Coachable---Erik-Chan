@@ -46,3 +46,9 @@ def merge(arr, lo, mid, hi):
 
 if __name__ == "__main__":
     arr = [8,4,3,9,10,2,1,5,6,7]
+
+    print(arr)
+
+    mergeSort(arr)
+
+    print(arr)
