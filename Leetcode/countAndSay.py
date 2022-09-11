@@ -1,45 +1,36 @@
-class Count:
-
-    def __init__(self):
-        self.hmap = {}
-    
+class Solution:
     def countAndSay(self, n: int) -> str:
-        res = "1"
         
-        while n > 1:
-            temp, number, count = "", res[0], 0
+        def transpose(string):
+            count = 0
             
-            for x in res:
-                if x == number:
+            res = ""
+            
+            char = string[0]
+            
+            for x in string:
+                if char == x:
                     count += 1
                     
+                    
                 else:
-                    temp += str(count)
-                    temp += number
-                    number = x
+                    res += str(count)
+                    res += char
+                    char = x
                     count = 1
+                    
+            res += str(count)
+            res += char
+            
+            return res
             
             
-            # base
-            temp += str(count)
-            temp += number
+                    
+        def recurse(n):
+            if n == 1:
+                return "1"
             
-            n -= 1
+            return transpose(recurse(n - 1))
+                
             
-            res = temp
-            
-        return res
-    
-    
-    def makeHmap(self):
-        for x in range(1, 31):
-            self.hmap[x] = self.countAndSay(x)
-            
-
-myCount = Count()
-
-myCount.makeHmap()
-
-print(myCount.hmap)
-        
-    
+        return recurse(n)
