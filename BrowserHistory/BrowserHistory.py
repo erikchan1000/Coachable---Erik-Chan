@@ -23,6 +23,8 @@ class BrowserHistory:
         return self.currentPage
 
     def go_to(self, page):
+        p1 = self.currentIndex + 1
+        
         if self.currentPage and self.currentPage.next is not None:
             self.currentPage.next = None
 

@@ -8,8 +8,6 @@ lines = file.readlines()
 
 lines2 = file2.readlines()
 
-print(lines2)
-
 def setify(input):
 
     for x in range(len(input)):
@@ -35,7 +33,7 @@ class Point:
         return f"({self.x}, {self.y})"
 
     def distanceTo(self, that):
-        return math.sqrt((self.x - that.x) ** 2 + (self.y + that.y) ** 2)
+        return math.sqrt((self.x - that.x) ** 2 + (self.y - that.y) ** 2)
 
     
 class Node:
@@ -56,9 +54,13 @@ class Tour:
         self.size = 0
 
     def __str__(self):
-        myString = [x.point.__str__() for x in self.points]
+        curr = self.head
+        temp = []
+        while curr:
+            temp.append(f"({curr.point.x}, {curr.point.y})")
+            curr = curr.next
 
-        return " -> ".join(myString)
+        return " -> ".join(temp)
 
     def _insert_at(self, p , prev = None):
         if len(self.points) == 0:
@@ -90,7 +92,7 @@ class Tour:
         else:
             for x in self.points:
                 
-                currDistance = p.distanceTo(x.point)
+                currDistance = x.point.distanceTo(p)
                 
                 if currDistance < minDistance:
                     minDistance = currDistance
@@ -142,6 +144,8 @@ print(myTour)
 
 print(myTour2)
 
+
+
 myPoints2 = [Point(x[0], x[1]) for x in lines2]
 
 tour1000 = Tour()
@@ -153,5 +157,12 @@ for x in myPoints2:
 
 print(tour1000)
 
-print(tour1001)
+curr = tour1000.head
 
+temp = 0
+
+while curr.next:
+    temp += curr.point.distanceTo(curr.next.point)
+    curr = curr.next
+
+print(temp)
