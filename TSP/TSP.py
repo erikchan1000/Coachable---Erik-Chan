@@ -135,6 +135,7 @@ class Tour:
 myTour = Tour()
 myTour2 = Tour()
 myPoints = [Point(x[0], x[1]) for x in lines]
+myPoints.pop(0)
 
 for x in myPoints:
     myTour.insertNearest(x)
@@ -147,6 +148,7 @@ print(myTour2)
 
 
 myPoints2 = [Point(x[0], x[1]) for x in lines2]
+myPoints2.pop(0)
 
 tour1000 = Tour()
 tour1001 = Tour()
