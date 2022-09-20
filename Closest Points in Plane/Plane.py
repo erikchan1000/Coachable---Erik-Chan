@@ -23,6 +23,7 @@ class NearestPointSet:
     self.points = []
     self.closest = []
     self.closest_distance = float('inf')
+    self.closest_points = [None, None]
 
   # Returns the size of the NearestPointSet
   # Runtime should be O(1)
@@ -48,39 +49,43 @@ class NearestPointSet:
 
     self.divide(mid + 1, hi)
 
-    print(self.merge(lo, mid, hi))
+    self.merge(lo, mid, hi)
 
-  def merge(self, lo, mid, hi, temp = [None, None]):
+  def merge(self, lo, mid, hi):
     p1 = lo
+
     p2 = mid + 1
 
     while p1 <= mid and p2 <= hi:
       if self.points[p1].distance_to(self.points[p2]) < self.closest_distance:
         self.closest_distance = self.points[p1].distance_to(self.points[p2])
-        temp[0] = self.points[p1]
-        temp[1] = self.points[p2]
 
-      if self.points[p1].x < self.points[p2].x:
+        self.closest_points[0] = self.points[p1]
+
+        self.closest_points[1] = self.points[p2]
+
+      if self.points[p1].y < self.points[p2].y:
         p1 += 1
-
+      
       else:
         p2 += 1
-
-    return temp
 
 
 
   def find_closest(self):
     self.divide(0, len(self.points) - 1)
 
-    return self.closest_distance, temp[0], temp[1]
+    return (self.closest_points[0].x, self.closest_points[0].y), (self.closest_points[1].x, self.closest_points[1].y), self.closest_distance
 
 if __name__ == "__main__":
   myClass = NearestPointSet()
 
-  myClass.insert(Point(1, 1))
-  myClass.insert(Point(2, 5))
-  myClass.insert(Point(3, 10))
-  myClass.insert(Point(4, 4))
+  
+ 
 
   print(myClass.find_closest())
+
+  for x in myClass.points:
+    print(x.x, x.y)
+
+  
