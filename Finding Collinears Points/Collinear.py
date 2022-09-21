@@ -39,7 +39,10 @@ class CollinearPointFinder:
   # Hint: This method will be the majority of the logic in your code
   # It will include a lot of preprocessing to make the other methods very quick.
   def __init__(self, points: list[Point]):
-    hmap = {}
+
+    self.points = points
+
+    self.hmap = {}
     
     for p in range(len(points)):
         temp = points[:p] + points[p + 1 :]
@@ -68,36 +71,36 @@ class CollinearPointFinder:
             else: 
                 p1 += 1
 
-            if p2 - p1 + 2 not in hmap:
-                hmap[p2 - p1 + 2] = [[points[p]] + temp[p1 : p2 + 1]]
+            if p2 - p1 + 2 not in self.hmap:
+                self.hmap[p2 - p1 + 2] = [[points[p]] + temp[p1 : p2 + 1]]
 
             else:
-                hmap[p2 - p1 + 2].append([points[p]] + temp[p1 : p2 + 1])
+                self.hmap[p2 - p1 + 2].append([points[p]] + temp[p1 : p2 + 1])
 
-    for x in hmap:
-        for i in hmap[x]:
+    for x in self.hmap:
+        for i in self.hmap[x]:
             for z in range(len(i)):
                 i[z] = (i[z].x, i[z].y)
 
-    for x in hmap:
+    for x in self.hmap:
         print(x)
 
-        print(hmap[x])
+        print(self.hmap[x])
 
 
   # Returns the number of points in CollinearPointFinder
   # The runtime should be O(1)
   def size(self) -> int:
-    pass
+    return len(self.points)
   # Returns the number of collinear segments with at least length k.
   # The runtime should be O(1)
   def num_segments(self, k: int) -> int:
-    pass
+    return len(self.hmap[k])
   
   # Returns a list of all collinear segments with at least length k.
   # The runtime should be O(1)
   def get_segments(self, k: int) -> int:
-    pass
+    return self.hmap[k]
 
 
 
