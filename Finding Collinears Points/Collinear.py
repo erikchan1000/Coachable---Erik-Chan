@@ -54,10 +54,10 @@ class CollinearPointFinder:
         p2 = 0
 
         while p1 < len(temp):
-            slope = temp[p1].slope_to(points[p])
+            slope = points[p].slope_to(temp[p1])
             if p2 != p1:
                 
-                slope2 = temp[p2].slope_to(points[p])
+                slope2 = points[p].slope_to(temp[p2])
 
                 if slope == slope2 and p2 < len(points) - 1:
                     p2 += 1
@@ -71,11 +71,11 @@ class CollinearPointFinder:
             else: 
                 p1 += 1
 
-            if p2 - p1 + 2 not in self.hmap:
-                self.hmap[p2 - p1 + 2] = [[points[p]] + temp[p1 : p2 + 1]]
+            if p2 - p1 + 1 not in self.hmap:
+                self.hmap[p2 - p1 + 1] = [[points[p]] + temp[p1 : p2]]
 
             else:
-                self.hmap[p2 - p1 + 2].append([points[p]] + temp[p1 : p2 + 1])
+                self.hmap[p2 - p1 + 1].append([points[p]] + temp[p1 : p2])
 
     for x in self.hmap:
         for i in self.hmap[x]:
