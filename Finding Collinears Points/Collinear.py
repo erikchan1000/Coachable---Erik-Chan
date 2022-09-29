@@ -46,7 +46,7 @@ class CollinearPointFinder:
     
     for p in range(len(points)):
         temp = points[:p] + points[p + 1 :]
-
+        
         temp.sort(key = lambda x : points[p].slope_to(x))
         
         p1 = 0
