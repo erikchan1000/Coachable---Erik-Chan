@@ -15,10 +15,16 @@ class TrieNode:
         self.children = {}
         self.isWord = False
         self.searchNum = 0
+        self.prefixUrls = []
 
 class Trie:
     def __init__(self):
         self.head = TrieNode()
+        self.characterHashMap = {}
+        
+         
+        # keys -> characters
+        #values -> set in urls that contain the key
 
     def insert(self, word):
         curr = self.head
@@ -27,7 +33,10 @@ class Trie:
             if c not in curr.children:
                 curr.children[c] = TrieNode()
 
+            curr.children[c].prefixUrls.insertSorted(word)
+            self.characterHashMap[c].append(word)
             curr = curr.children[c]
+            
 
         curr.isWord = True
         curr.searchNum += 1
@@ -66,20 +75,13 @@ class Trie:
             word += c
             curr = curr.children[c]
 
-        possibleWords = []
+        return curr.prefixUrls
 
-        def bfs(node, currWord = word):
-            print(len(node.children))
-            if len(node.children) == 0:
-                possibleWords.append([node.searchNum, currWord])
-                return  
+    def substringSearch(self, substring):
+        curr = self.head
+
+        for x in substring:
             
-            for x in node.children:
-                bfs(node.children[x], currWord + x)
-
-        bfs(curr)
-
-        return possibleWords
 
 
 class BrowserHistory:
@@ -89,6 +91,7 @@ class BrowserHistory:
         self.hmap = {}
         self.currentIndex = 0
         self.stringTrie = Trie()
+        self.possibleUrls = []
 
         
 
@@ -156,9 +159,8 @@ class BrowserHistory:
         self.currentPage = self.hmap[self.currentIndex]
 
     def autocomplete(self, prefix, length = None):
+        
         possibleUrls = self.stringTrie.searchPossibleWords(prefix)
-
-        possibleUrls.sort(key = lambda x : x[0], reverse = True)
 
         possibleUrls = [x[1] for x in possibleUrls]
 
@@ -167,6 +169,9 @@ class BrowserHistory:
 
         else:
             print(possibleUrls[0 : length])
+
+    def deleteHistory(self):
+        pass
 
 
 
