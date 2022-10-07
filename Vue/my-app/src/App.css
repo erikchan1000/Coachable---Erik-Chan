@@ -16,6 +16,8 @@
   margin: 0 auto;
 }
 
+/*Add dynamic font size to square*/
+
 .square {
   height: 100%;
   width: 33.33%;
@@ -24,7 +26,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 5em;
+  font-size: 5vw;
   cursor: crosshair;
 
   margin: 20px;

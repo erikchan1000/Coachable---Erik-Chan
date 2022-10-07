@@ -111,30 +111,44 @@ class TwoDimensionalTree:
     def contains(self, p):
         return True if p in self.points else False
 
-    def nearest(self, p, minDistance = float("inf")):
-        if not self.head:
-            return None
+    def nearestNeighborSearch(self, p: Point):
+        res = []
+        self.dfsNearestNeighborSearch(self.head, p, res)
+        return res
 
-        res = self.head
-        curr = self.head
+    def dfsNearestNeighborSearch(self, curr: Node, p: Point, res):
+        if not curr:
+            return
 
-        minDistance = min(minDistance, self.head.point.distanceSquaredTo(p))
+        if not res:
+            res.append(curr.point)
 
-        while curr:
-            if curr.point.distanceSquaredTo(p) < minDistance:
-                res = curr
-                minDistance = curr.point.distanceSquaredTo(p)
+        elif p.distanceSquaredTo(curr.point) < p.distanceSquaredTo(res[0]):
+            res[0] = curr.point
 
-            if curr.left and curr.left.point.distanceSquaredTo(p) < minDistance:
-                curr = curr.left
+        else:
+            return
 
-            elif curr.right and curr.right.point.distanceSquaredTo(p) < minDistance:
-                curr = curr.right
+        self.dfsNearestNeighborSearch(curr.left, p, res)
+        self.dfsNearestNeighborSearch(curr.right, p, res)
 
-            else:
-                break
+    def rangeSearch(self, rectangle: Rectangle):
+        res = []
+        self.dfsRangeSearch(self.head, rectangle, res)
+        return res
 
-        return res.point
+    def dfsRangeSearch(self, curr: Node, rectangle: Rectangle, res):
+        if not curr:
+            return
+
+        if rectangle.contains(curr.point):
+            res.append(curr.point)
+
+        else:
+            return
+
+        self.dfsRangeSearch(curr.left, rectangle, res)
+        self.dfsRangeSearch(curr.right, rectangle, res)
 
 
 
