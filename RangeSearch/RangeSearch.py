@@ -149,9 +149,3 @@ class TwoDimensionalTree:
 
         self.dfsRangeSearch(curr.left, rectangle, res)
         self.dfsRangeSearch(curr.right, rectangle, res)
-
-
-
-
-        
-        
