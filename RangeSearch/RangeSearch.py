@@ -91,7 +91,6 @@ class TwoDimensionalTree:
 
     def dfsInsert(self, curr: Node, node, level = 1):
         if curr is None:
-
             return node
 
         if level % 2 == 1:
@@ -136,6 +135,8 @@ class TwoDimensionalTree:
                 break
 
         return res.point
+
+
 
 
         
