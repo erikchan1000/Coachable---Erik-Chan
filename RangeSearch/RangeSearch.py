@@ -69,6 +69,14 @@ class Rectangle:
 
         return False
 
+    def pointIntersects(self, point) -> bool:
+        return point.x() >= self.xmin and point.x() <= self.xmax and point.y() >= self.ymin and point.y() <= self.ymax
+
+
+    #1. Bisect (check both branch)
+    #2. > right 
+    #3. < left
+
 class TwoDimensionalTree:
     def __init__(self):
         self.points = set()
@@ -137,15 +145,24 @@ class TwoDimensionalTree:
         self.dfsRangeSearch(self.head, rectangle, res)
         return res
 
-    def dfsRangeSearch(self, curr: Node, rectangle: Rectangle, res):
+    def dfsRangeSearch(self, curr: Node, rectangle: Rectangle, res, isX = True):
         if not curr:
             return
 
         if rectangle.contains(curr.point):
             res.append(curr.point)
 
-        else:
-            return
+        if isX:
+            if curr.point.x() > rectangle.xmin:
+                self.dfsRangeSearch(curr.left, rectangle, res, False)
 
-        self.dfsRangeSearch(curr.left, rectangle, res)
-        self.dfsRangeSearch(curr.right, rectangle, res)
+            if curr.point.x() < rectangle.xmax:
+                self.dfsRangeSearch(curr.right, rectangle, res, False)
+
+        else:
+            if curr.point.y() > rectangle.ymin:
+                self.dfsRangeSearch(curr.left, rectangle, res, True)
+
+            if curr.point.y() < rectangle.ymax:
+                self.dfsRangeSearch(curr.right, rectangle, res, True)
+
