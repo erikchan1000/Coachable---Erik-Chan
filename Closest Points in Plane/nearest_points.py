@@ -1,21 +1,5 @@
-# 2D point in the plane with x,y coordinate.
-class Point:
-  # Initializes point with x,y coordinates.
-  def __init__(self, x, y):
-    self.y = y
-    self.x = x
-  
-  # Returns the squared Euclidean distance between self and other point.
-  # (x1 - x2)^2 + (y1 - y2)^2
-  def distance_to(self, other):
-    return (self.x - other.x)**2 + (self.y - other.y)**2
-  
-  # Comparator function that will sort by x coordinate first and
-  # then by y coordinate as a tiebreaker.
-  def __cmp__(self, other):
-    if self.x == other.x:
-      return self.y - other.y
-    return self.x - other.x
+from point import Point
+
 # Represents a set of points and the closest ones.
 class NearestPointSet:
   # Initializes an empty set of points.
@@ -24,16 +8,18 @@ class NearestPointSet:
     self.closest = []
     self.closest_distance = float('inf')
     self.closest_points = [None, None]
+    self._size = 0
 
   # Returns the size of the NearestPointSet
   # Runtime should be O(1)
   def size(self):
-    return len(self.points)
+    return self._size
   # Inserts a Point p into the NearestPointSet
   # Runtime should be O(log n)
   def insert(self, p: Point):
-    self.points.append(p)
-    self.points.sort(key = lambda x : (x.x, x.y))
+    if p not in self.points:
+      self.points.append(p)
+      self._size += 1
 
   # Returns the 2 closest points as well as the distance between them.
   # Output is in format (p1, p2, distance between p1 and p2)
@@ -70,22 +56,12 @@ class NearestPointSet:
       else:
         p2 += 1
 
+  # Returns the 2 closest points as well as the distance between them.
+  # Output the distance between the 2 closest points.
+  # Runtime should be O(n log n) in the worst case
+  def find_closest(self) -> float:
 
-
-  def find_closest(self):
     self.divide(0, len(self.points) - 1)
 
-    return (self.closest_points[0].x, self.closest_points[0].y), (self.closest_points[1].x, self.closest_points[1].y), self.closest_distance
+    return None if self.closest_distance == float('inf') else self.closest_distance
 
-if __name__ == "__main__":
-  myClass = NearestPointSet()
-
-  
- 
-
-  print(myClass.find_closest())
-
-  for x in myClass.points:
-    print(x.x, x.y)
-
-  

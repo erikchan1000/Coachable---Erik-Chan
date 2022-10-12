@@ -9,10 +9,11 @@ class CollinearPointFinder:
   def __init__(self, points: list):
     self.points = points
     self.hmap = defaultdict(list)
+    visitedSlopes = set()
   
     p = 0
 
-    while p < len(self.points) - 1:
+    while p < len(self.points):
       
       p2 = p + 1
       p3 = p2 + 1
@@ -20,13 +21,17 @@ class CollinearPointFinder:
       self.points[p2:] = sorted(self.points[p2:], key=lambda point: point.slope_to(self.points[p]))
 
       while p3 < len(self.points) and self.points[p].slope_to(self.points[p2]) == self.points[p].slope_to(self.points[p3]):
+        if self.points[p].slope_to(self.points[p3]) in visitedSlopes:
+          break
+        
         count += 1
         p3 += 1
 
       if count >= 2:
         self.hmap[count + 1].append(self.points[p:p3])
+        visitedSlopes.add(self.points[p].slope_to(self.points[p3 - 1]))
 
-      p = p3
+      p += 1
 
     for x in self.hmap:
         for i in self.hmap[x]:
